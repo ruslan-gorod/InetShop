@@ -11,11 +11,11 @@ public class OrderDao {
     private static final Logger logger = Logger.getLogger(OrderDao.class);
     private static Order order= null;
 
-    public static Order selectOne(long id) {
+    public static Order selectOne(long id, String param) {
 
         Connection connection = DbConnector.connect();
         try {
-            String sql = "SELECT * FROM orders WHERE id=?";
+            String sql = "SELECT * FROM orders WHERE " + param + "=?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
