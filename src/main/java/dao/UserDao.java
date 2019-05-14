@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import model.User;
 import org.apache.log4j.Logger;
+import utils.HashUtil;
 
 public class UserDao {
 
@@ -20,13 +21,14 @@ public class UserDao {
                 Statement statement = connection.createStatement();
                 ResultSet resultSet = statement.executeQuery("SELECT * FROM users");
                 while (resultSet.next()) {
-                    int id = resultSet.getInt(1);
-                    String login = resultSet.getString(2);
-                    String password = resultSet.getString(3);
-                    String name = resultSet.getString(4);
-                    String email = resultSet.getString(5);
-                    long roleId = resultSet.getLong(6);
-                    User user = new User(id, login, password, name, email,  roleId);
+                    int id = resultSet.getInt("id");
+                    String login = resultSet.getString("login");
+                    String password = resultSet.getString("password");
+                    String name = resultSet.getString("name");
+                    String email = resultSet.getString("email");
+                    long roleId = resultSet.getLong("roleId");
+                    String salt = resultSet.getString("salt");
+                    User user = new User(id, login, password, name, email,  roleId, salt);
                     users.add(user);
                 }
             } catch (SQLException e) {
@@ -45,13 +47,14 @@ public class UserDao {
                 ResultSet resultSet = preparedStatement.executeQuery();
                 logger.debug(sql);
                 if (resultSet.next()) {
-                    int id = resultSet.getInt(1);
-                    String loginDb = resultSet.getString(2);
-                    String password = resultSet.getString(3);
-                    String name = resultSet.getString(4);
-                    String email = resultSet.getString(5);
-                    long roleId = resultSet.getLong(6);
-                    user = new User(id, loginDb, password, name, email, roleId);
+                    int id = resultSet.getInt("id");
+                    String loginDb = resultSet.getString("login");
+                    String password = resultSet.getString("password");
+                    String name = resultSet.getString("name");
+                    String email = resultSet.getString("email");
+                    long roleId = resultSet.getLong("roleId");
+                    String salt = resultSet.getString("salt");
+                    user = new User(id, loginDb, password, name, email, roleId, salt);
                 }
             } catch (SQLException e) {
                 logger.error("Can't return user; ", e);
@@ -65,7 +68,7 @@ public class UserDao {
             try {
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
                 preparedStatement.setString(1, user.getLogin());
-                preparedStatement.setString(2, user.getPassword());
+                preparedStatement.setString(2, HashUtil.getSHA512SecurePassword(user.getPassword(),user.getSalt()));
                 preparedStatement.setString(3, user.getName());
                 preparedStatement.setString(4, user.getEmail());
                 preparedStatement.setLong(5, user.getRoleId());
@@ -79,7 +82,7 @@ public class UserDao {
 
         public static int update(User user) {
             Connection connection = DbConnector.connect();
-            String sql = "UPDATE users SET  login = ?, password = ?, name = ?, email = ?, role_id = ? WHERE id = ?";
+            String sql = "UPDATE users SET  login = ?, password = ?, name = ?, email = ?, role_id = ?, salt = ? WHERE id = ?";
             try {
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
                 preparedStatement.setString(1, user.getLogin());
@@ -87,7 +90,8 @@ public class UserDao {
                 preparedStatement.setString(3, user.getName());
                 preparedStatement.setString(4, user.getEmail());
                 preparedStatement.setLong(5, user.getRoleId());
-                preparedStatement.setInt(6, user.getId());
+                preparedStatement.setString(6, user.getSalt());
+                preparedStatement.setInt(7, user.getId());
                 logger.debug(sql);
                 return preparedStatement.executeUpdate();
             } catch (SQLException e) {
@@ -96,12 +100,12 @@ public class UserDao {
             return 0;
         }
 
-        public static boolean delete(String login) {
+        public static boolean delete(String id) {
             Connection connection = DbConnector.connect();
-            String sql = "DELETE FROM users WHERE login = ?";
+            String sql = "DELETE FROM users WHERE id = ?";
             try {
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
-                preparedStatement.setString(1, login);
+                preparedStatement.setString(1, id);
                 preparedStatement.execute();
                 logger.debug(sql);
                 return true;

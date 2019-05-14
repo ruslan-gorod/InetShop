@@ -33,13 +33,13 @@ public class GoodDao {
         return goods;
     }
 
-    public static Good selectOne(long id, String param) {
+    public static Good selectOne(String id, String param) {
         Good good = null;
         Connection connection = DbConnector.connect();
         try {
             String sql = "SELECT * FROM goods WHERE " + param + "=?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setLong(1, id);
+            preparedStatement.setString(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             logger.debug(sql);
             if (resultSet.next()) {
@@ -89,12 +89,12 @@ public class GoodDao {
         return 0;
     }
 
-    public static boolean delete(long id) {
+    public static boolean delete(String id) {
         Connection connection = DbConnector.connect();
         String sql = "DELETE FROM goods WHERE id = ?";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setLong(1, id);
+            preparedStatement.setString(1, id);
             preparedStatement.execute();
             logger.debug(sql);
             return true;

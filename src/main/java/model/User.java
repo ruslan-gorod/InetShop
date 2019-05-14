@@ -1,6 +1,7 @@
 package model;
 
 import java.util.Objects;
+import utils.HashUtil;
 
 public class User {
     private int id;
@@ -9,14 +10,25 @@ public class User {
     private String password;
     private String email;
     private long roleId;
+    private String salt;
 
-    public User(int id, String login, String password, String name, String email, long roleId) {
+    public User(int id, String login, String password, String name, String email, long roleId, String salt) {
         this.id = id;
         this.name = name;
         this.login = login;
         this.password = password;
         this.email = email;
         this.roleId = roleId;
+        this.salt = salt;
+    }
+
+    public User(String login, String password, String name, String email, long roleId) {
+        this.name = name;
+        this.login = login;
+        this.password = password;
+        this.email = email;
+        this.roleId = roleId;
+        this.salt = HashUtil.getRandomSalt();
     }
 
     public int getId() {
@@ -67,22 +79,31 @@ public class User {
         this.roleId = roleId;
     }
 
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id &&
-                roleId == user.roleId &&
-                Objects.equals(name, user.name) &&
-                Objects.equals(login, user.login) &&
-                Objects.equals(password, user.password) &&
-                Objects.equals(email, user.email);
+        return getId() == user.getId() &&
+                getRoleId() == user.getRoleId() &&
+                Objects.equals(getName(), user.getName()) &&
+                Objects.equals(getLogin(), user.getLogin()) &&
+                Objects.equals(getPassword(), user.getPassword()) &&
+                Objects.equals(getEmail(), user.getEmail()) &&
+                Objects.equals(getSalt(), user.getSalt());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, login, password, email, roleId);
+        return Objects.hash(getId(), getName(), getLogin(), getPassword(), getEmail(), getRoleId(), getSalt());
     }
 
     @Override

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.User;
+import utils.HashUtil;
 
 @WebServlet(value = "/regist")
 public class registerServlet extends HttpServlet {
@@ -19,7 +20,7 @@ public class registerServlet extends HttpServlet {
         String email = request.getParameter("emailUser");
         User tmpUser = UserDao.selectOne(login, "login");
         if (tmpUser == null) {
-            User user = new User(1, name, login, pass, email, 2);
+            User user = new User(login, pass, name, email, 2);
             UserDao.insert(user);
             request.getSession().setAttribute("user", UserDao.selectOne(login, "login"));
             getServletContext().getRequestDispatcher("/admin").forward(request, response);
