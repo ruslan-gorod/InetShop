@@ -20,10 +20,10 @@ public class AdminFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) req;
         User user = (User) httpServletRequest.getSession().getAttribute("user");
         if (user != null && user.getRoleId() == 2) {
-            resp.getWriter().print("go to user page");
+            req.getRequestDispatcher("goods.jsp").forward(req,resp);
             chain.doFilter(httpServletRequest, resp);
         } else {
-            resp.getWriter().print("go to admin page");
+            req.getRequestDispatcher("users.jsp").forward(req,resp);
         }
     }
 

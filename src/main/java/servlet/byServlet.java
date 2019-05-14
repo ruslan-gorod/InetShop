@@ -14,15 +14,15 @@ import service.SendEmail;
 @WebServlet(value = "/byServlet")
 public class byServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request,response);
+        int goodId = Integer.parseInt(request.getParameter("id"));
+        int code = (int) ((Math.random() * (9999 - 1000)) + 1000);
+        User user = (User) request.getSession().getAttribute("user");
+        OrderDao.insert(new Order(goodId, user.getId(), code));
+        SendEmail.sendMessage(user.getEmail(), code);
+        request.getRequestDispatcher("code.jsp").forward(request, response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int goodId = Integer.parseInt(request.getParameter("id"));
-        int code = (int) ((Math.random() * (9999 - 1000)) + 1000);
-        User user = (User)request.getSession().getAttribute("user");
-        OrderDao.insert(new Order(goodId,user.getId(),code));
-        SendEmail.sendMessage(user.getEmail(),  code);
-        request.getRequestDispatcher("code.jsp").forward(request,response);
+        doPost(request, response);
     }
 }

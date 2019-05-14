@@ -13,9 +13,9 @@ public class codeServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int code = Integer.parseInt(request.getParameter("code"));
         if (code == OrderDao.selectOne(code, "code").getCode()){
-            response.getWriter().print("Congratulations");
+            request.getRequestDispatcher("users.jsp").forward(request,response);
         } else {
-            response.getWriter().print("Wrong code!");
+            request.getRequestDispatcher("goods.jsp").forward(request,response);
         }
     }
 

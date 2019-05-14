@@ -3,10 +3,10 @@ package model;
 import java.util.Objects;
 
 public class Order {
-    int id;
-    int goodId;
-    int userId;
-    int code;
+    private int id;
+    private int goodId;
+    private int userId;
+    private int code;
 
     public Order(int goodId, int userId, int code) {
         this.goodId = goodId;
