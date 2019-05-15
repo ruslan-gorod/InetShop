@@ -8,7 +8,7 @@
 </head>
 <body>
 <form action="regist" method="post" class="login-form">
-    <input hidden type="text" name="id"  value="${id}">
+    <input hidden type="text" name="id" value="${id}">
     Login <input name="login" type="text" class="my-input" required><br>
     Password <input name="password" type="password" class="my-input" required><br>
     Confirm Password <input name="confirmPassword" type="password" class="my-input" required><br>
