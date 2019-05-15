@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Roles;
 import model.User;
 
 @WebServlet(value = "/admin")
@@ -17,7 +18,7 @@ public class AdminServlet extends HttpServlet {
         request.setAttribute("goods", GoodDao.selectAll());
         User user = (User)(request.getSession().getAttribute("user"));
         request.setAttribute("name", user.getName());
-        if (user.getRoleId() == 1){
+        if (user.getRoleId() == Roles.ADMIN.getRoles()){
             request.getRequestDispatcher("users.jsp").forward(request,response);
         } else {
             request.getRequestDispatcher("goods.jsp").forward(request,response);
