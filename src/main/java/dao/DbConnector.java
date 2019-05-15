@@ -19,7 +19,7 @@ public class DbConnector {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             logger.debug("Connect to DB");
-            connection = DriverManager.getConnection(url,username,password);
+            connection = DriverManager.getConnection(url, username, password);
         } catch (Exception e) {
             logger.error("Can't connect to DB;", e);
         }

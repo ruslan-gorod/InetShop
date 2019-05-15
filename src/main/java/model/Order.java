@@ -14,12 +14,13 @@ public class Order {
         this.code = code;
     }
 
-    public Order(int id,int goodId, int userId, int code) {
+    public Order(int id, int goodId, int userId, int code) {
         this.id = id;
         this.goodId = goodId;
         this.userId = userId;
         this.code = code;
     }
+
     public int getId() {
         return id;
     }

@@ -9,7 +9,7 @@ import org.apache.log4j.Logger;
 
 public class OrderDao {
     private static final Logger logger = Logger.getLogger(OrderDao.class);
-    private static Order order= null;
+    private static Order order = null;
 
     public static Order selectOne(long id, String param) {
 

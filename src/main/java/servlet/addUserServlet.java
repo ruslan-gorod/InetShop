@@ -11,10 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(value = "/addUserServlet")
 public class addUserServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("registrationByAdmin.jsp").forward(request,response);
+        request.getRequestDispatcher("registrationByAdmin.jsp").forward(request, response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doPost(request,response);
+        doPost(request, response);
     }
 }

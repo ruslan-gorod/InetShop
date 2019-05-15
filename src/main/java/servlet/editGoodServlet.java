@@ -18,8 +18,8 @@ public class editGoodServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String id = request.getParameter("idGood");
-        Good good = GoodDao.selectOne(id,"id");
-        String name =  request.getParameter("nameGood");
+        Good good = GoodDao.selectOne(id, "id");
+        String name = request.getParameter("nameGood");
         String description = request.getParameter("description");
         Double price = Double.parseDouble(request.getParameter("price"));
         good.setDescription(description);
@@ -35,11 +35,11 @@ public class editGoodServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String id = request.getParameter("idGood");
-        Good good = GoodDao.selectOne(id,"id");
-        request.setAttribute("name",good.getName());
-        request.setAttribute("idGood",good.getId());
+        Good good = GoodDao.selectOne(id, "id");
+        request.setAttribute("name", good.getName());
+        request.setAttribute("idGood", good.getId());
         request.setAttribute("description", good.getDescription());
-        request.setAttribute("price",good.getPrice());
+        request.setAttribute("price", good.getPrice());
         request.getRequestDispatcher("/addGood.jsp").forward(request, response);
     }
 }

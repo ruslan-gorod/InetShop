@@ -12,10 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 public class codeServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int code = Integer.parseInt(request.getParameter("code"));
-        if (code == OrderDao.selectOne(code, "code").getCode()){
-            request.getRequestDispatcher("users.jsp").forward(request,response);
+        if (code == OrderDao.selectOne(code, "code").getCode()) {
+            request.getRequestDispatcher("users.jsp").forward(request, response);
         } else {
-            request.getRequestDispatcher("goods.jsp").forward(request,response);
+            request.getRequestDispatcher("goods.jsp").forward(request, response);
         }
     }
 
