@@ -42,7 +42,7 @@ public class RoleDao {
             ResultSet resultSet = preparedStatement.executeQuery();
             logger.debug(sql);
             if (resultSet.next()) {
-                long idDb = resultSet.getLong(1);
+                int idDb = resultSet.getInt(1);
                 String name = resultSet.getString(2);
                 String description = resultSet.getString(3);
                 role = new Role(idDb, name, description);

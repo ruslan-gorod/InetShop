@@ -1,8 +1,11 @@
 package servlet;
 
 import dao.GoodDao;
+import dao.GoodDoaHibImpl;
 import dao.RoleDao;
+import dao.RoleDaoHibImpl;
 import dao.UserDao;
+import dao.UserDaoHibImpl;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -17,32 +20,32 @@ import model.User;
 public class editUserServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String id = request.getParameter("idUser");
-        User user = UserDao.selectOne(id, "id");
+        int id = Integer.parseInt(request.getParameter("idUser"));
+        User user = UserDaoHibImpl.findById(id);
         String login = request.getParameter("login");
         String password = request.getParameter("password");
         String name = request.getParameter("nameUser");
-        Long role = Long.parseLong(request.getParameter("idRoleUser"));
+        int role = Integer.parseInt(request.getParameter("idRoleUser"));
         user.setLogin(login);
         user.setPassword(password);
         user.setName(name);
         user.setRoleId(role);
-        UserDao.update(user);
-        List<User> users = UserDao.selectAll();
-        List<Good> goods = GoodDao.selectAll();
+        UserDaoHibImpl.update(user);
+        List<User> users = UserDaoHibImpl.getAllUsers();
+        List<Good> goods = GoodDoaHibImpl.getAllGoods();
         request.setAttribute("users", users);
         request.setAttribute("goods", goods);
-        request.setAttribute("role", RoleDao.selectOne(user.getRoleId(), "id"));
+        request.setAttribute("role", RoleDaoHibImpl.findById((int)user.getRoleId()));
         getServletContext().getRequestDispatcher("/users.jsp").forward(request, response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String id = request.getParameter("idUser");
-        User user = UserDao.selectOne(id, "id");
+        int id = Integer.parseInt(request.getParameter("idUser"));
+        User user = UserDaoHibImpl.findById(id);
         request.setAttribute("login", user.getLogin());
         request.setAttribute("name", user.getName());
         request.setAttribute("id", user.getId());
-        request.setAttribute("role", RoleDao.selectOne(user.getRoleId(), "id"));
+        request.setAttribute("role", RoleDaoHibImpl.findById((int)user.getRoleId()));
         request.setAttribute("email", user.getEmail());
         request.getRequestDispatcher("/editUser.jsp").forward(request, response);
     }

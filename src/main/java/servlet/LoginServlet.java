@@ -1,7 +1,9 @@
 package servlet;
 
 import dao.UserDao;
+import dao.UserDaoHibImpl;
 import java.io.IOException;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,7 +21,13 @@ public class LoginServlet extends HttpServlet {
 
         String loginFromForm = request.getParameter("login");
         String passwordFromForm = request.getParameter("password");
-        User newUser = UserDao.selectOne(loginFromForm, "login");
+        User newUser = null;
+        List<User> listUsers = UserDaoHibImpl.getAllUsers();
+        for (User user: listUsers){
+            if (user.getLogin().equals(loginFromForm)){
+                newUser = user;
+            }
+        }
         if (newUser != null) {
             String hashPasswordFromForm = HashUtil.getSHA512SecurePassword(passwordFromForm, newUser.getSalt());
             if (newUser.getPassword().equals(hashPasswordFromForm)) {

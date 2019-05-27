@@ -1,13 +1,28 @@
 package model;
 
 import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "roles")
 public class Role {
-    private long id;
+    @Id
+    @Column(name = "id")
+    private int id;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "description")
     private String description;
 
-    public Role(long id, String name, String description) {
+    public Role() {
+    }
+
+    public Role(int id, String name, String description) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -17,7 +32,7 @@ public class Role {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -42,14 +57,14 @@ public class Role {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Role role = (Role) o;
-        return id == role.id &&
-                Objects.equals(name, role.name) &&
-                Objects.equals(description, role.description);
+        return getId() == role.getId() &&
+                Objects.equals(getName(), role.getName()) &&
+                Objects.equals(getDescription(), role.getDescription());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description);
+        return Objects.hash(getId(), getName(), getDescription());
     }
 
     @Override

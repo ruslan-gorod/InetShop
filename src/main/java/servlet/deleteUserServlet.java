@@ -1,6 +1,7 @@
 package servlet;
 
 import dao.UserDao;
+import dao.UserDaoHibImpl;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -17,8 +18,9 @@ public class deleteUserServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String id = request.getParameter("idUser");
-        UserDao.delete(id);
+        int id = Integer.parseInt(request.getParameter("idUser"));
+        User user = UserDaoHibImpl.findById(id);
+        UserDaoHibImpl.delete(user);
         List<User> users = UserDao.selectAll();
         request.setAttribute("users", users);
         request.getRequestDispatcher("/users.jsp").forward(request, response);

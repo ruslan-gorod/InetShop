@@ -26,7 +26,7 @@ public class UserDao {
                 String password = resultSet.getString("password");
                 String name = resultSet.getString("name");
                 String email = resultSet.getString("email");
-                long roleId = resultSet.getLong("roleId");
+                int roleId = resultSet.getInt("roleId");
                 String salt = resultSet.getString("salt");
                 User user = new User(id, login, password, name, email, roleId, salt);
                 users.add(user);
@@ -52,7 +52,7 @@ public class UserDao {
                 String password = resultSet.getString("password");
                 String name = resultSet.getString("name");
                 String email = resultSet.getString("email");
-                long roleId = resultSet.getLong("roleId");
+                int roleId = resultSet.getInt("roleId");
                 String salt = resultSet.getString("salt");
                 user = new User(id, loginDb, password, name, email, roleId, salt);
             }
@@ -64,14 +64,15 @@ public class UserDao {
 
     public static int insert(User user) {
         Connection connection = DbConnector.connect();
-        String sql = "INSERT INTO users (login, password, name, email, role_id) Values (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO users (login, password, name, email, roleId, salt) Values (?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, user.getLogin());
-            preparedStatement.setString(2, HashUtil.getSHA512SecurePassword(user.getPassword(), user.getSalt()));
+            preparedStatement.setString(2, user.getPassword());
             preparedStatement.setString(3, user.getName());
             preparedStatement.setString(4, user.getEmail());
             preparedStatement.setLong(5, user.getRoleId());
+            preparedStatement.setString(6, user.getSalt());
             logger.debug(sql);
             return preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -82,7 +83,7 @@ public class UserDao {
 
     public static int update(User user) {
         Connection connection = DbConnector.connect();
-        String sql = "UPDATE users SET  login = ?, password = ?, name = ?, email = ?, role_id = ?, salt = ? WHERE id = ?";
+        String sql = "UPDATE users SET  login = ?, password = ?, name = ?, email = ?, roleId = ?, salt = ? WHERE id = ?";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, user.getLogin());

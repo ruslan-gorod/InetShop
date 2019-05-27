@@ -1,18 +1,35 @@
 package model;
 
 import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import utils.HashUtil;
 
+@Entity
+@Table(name = "users")
 public class User {
+    @Id
+    @Column(name = "id")
     private int id;
+    @Column(name = "name")
     private String name;
+    @Column(name = "login")
     private String login;
+    @Column(name = "password")
     private String password;
+    @Column(name = "email")
     private String email;
-    private long roleId;
+    @Column(name = "roleid")
+    private int roleId;
+    @Column(name = "salt")
     private String salt;
 
-    public User(int id, String login, String password, String name, String email, long roleId, String salt) {
+    public User() {
+    }
+
+    public User(int id, String login, String password, String name, String email, int roleId, String salt) {
         this.id = id;
         this.name = name;
         this.login = login;
@@ -22,13 +39,13 @@ public class User {
         this.salt = salt;
     }
 
-    public User(String login, String password, String name, String email, long roleId) {
+    public User(String login, String pass, String name, String email, int roleId, String salt) {
         this.name = name;
         this.login = login;
-        this.password = password;
+        this.password = HashUtil.getSHA512SecurePassword(pass,salt);
         this.email = email;
         this.roleId = roleId;
-        this.salt = HashUtil.getRandomSalt();
+        this.salt = salt;
     }
 
     public int getId() {
@@ -75,7 +92,7 @@ public class User {
         return roleId;
     }
 
-    public void setRoleId(long roleId) {
+    public void setRoleId(int roleId) {
         this.roleId = roleId;
     }
 

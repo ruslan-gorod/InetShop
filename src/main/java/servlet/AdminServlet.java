@@ -1,7 +1,7 @@
 package servlet;
 
-import dao.GoodDao;
-import dao.UserDao;
+import dao.GoodDoaHibImpl;
+import dao.UserDaoHibImpl;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,8 +14,8 @@ import model.User;
 @WebServlet(value = "/admin")
 public class AdminServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute("users", UserDao.selectAll());
-        request.setAttribute("goods", GoodDao.selectAll());
+        request.setAttribute("users", UserDaoHibImpl.getAllUsers());
+        request.setAttribute("goods", GoodDoaHibImpl.getAllGoods());
         User user = (User) (request.getSession().getAttribute("user"));
         request.setAttribute("name", user.getName());
         if (user.getRoleId() == Roles.ADMIN.getRole()) {

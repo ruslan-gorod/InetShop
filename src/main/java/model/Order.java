@@ -1,12 +1,30 @@
 package model;
 
 import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "orders")
 public class Order {
+
+    @Id
+    @Column(name = "id")
     private int id;
+
+    @Column(name = "goodId")
     private int goodId;
+
+    @Column(name = "userId")
     private int userId;
+
+    @Column(name = "code")
     private int code;
+
+    public Order() {
+    }
 
     public Order(int goodId, int userId, int code) {
         this.goodId = goodId;

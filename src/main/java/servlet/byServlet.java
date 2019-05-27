@@ -1,6 +1,7 @@
 package servlet;
 
 import dao.OrderDao;
+import dao.OrderDaoHibImpl;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,10 +15,10 @@ import service.SendEmail;
 @WebServlet(value = "/byServlet")
 public class byServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int goodId = Integer.parseInt(request.getParameter("id"));
+        int goodId = Integer.parseInt(request.getParameter("idGood"));
         int code = (int) ((Math.random() * (9999 - 1000)) + 1000);
         User user = (User) request.getSession().getAttribute("user");
-        OrderDao.insert(new Order(goodId, user.getId(), code));
+        OrderDaoHibImpl.save(new Order(goodId, user.getId(), code));
         SendEmail.sendMessage(user.getEmail(), code);
         request.getRequestDispatcher("code.jsp").forward(request, response);
     }

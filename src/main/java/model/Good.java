@@ -1,14 +1,31 @@
 package model;
 
 import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "goods")
 public class Good {
-    private long id;
+    @Id
+    @Column(name = "id")
+    private int id;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "description")
     private String description;
+
+    @Column(name = "price")
     private Double price;
 
-    public Good(long id, String name, String description, Double price) {
+    public Good() {
+    }
+
+    public Good(int id, String name, String description, Double price) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -19,7 +36,7 @@ public class Good {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -52,15 +69,15 @@ public class Good {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Good good = (Good) o;
-        return id == good.id &&
-                Objects.equals(name, good.name) &&
-                Objects.equals(description, good.description) &&
-                Objects.equals(price, good.price);
+        return getId() == good.getId() &&
+                Objects.equals(getName(), good.getName()) &&
+                Objects.equals(getDescription(), good.getDescription()) &&
+                Objects.equals(getPrice(), good.getPrice());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, price);
+        return Objects.hash(getId(), getName(), getDescription(), getPrice());
     }
 
     @Override
