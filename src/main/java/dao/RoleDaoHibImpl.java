@@ -13,38 +13,55 @@ public class RoleDaoHibImpl {
 
     public static Role findById(int id) {
         logger.info("Find role by id - " + id);
-        return HibernateSessionFactoryUtil.getSessionFactory().openSession().get(Role.class, id);
+        return HibernateSessionFactoryUtil
+                .getSessionFactory()
+                .openSession()
+                .get(Role.class, id);
     }
 
-    public static List<Role> getAllRoles(){
-        List<Role> roles = (List<Role>)  HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery("From Role").list();
+    public static List<Role> getAllRoles() {
+        List<Role> roles = (List<Role>) HibernateSessionFactoryUtil
+                .getSessionFactory()
+                .openSession()
+                .createQuery("From Role")
+                .list();
         logger.info("Find and return all roles");
         return roles;
     }
+
     public static void save(Role role) {
-        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-        Transaction tx1 = session.beginTransaction();
-        session.save(role);
-        tx1.commit();
-        session.close();
+        Transaction transaction;
+        try (Session session = HibernateSessionFactoryUtil
+                .getSessionFactory()
+                .openSession()) {
+            transaction = session.beginTransaction();
+            session.save(role);
+        }
+        transaction.commit();
         logger.info("Save role " + role.getName() + " to db");
     }
 
     public static void update(Role role) {
-        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-        Transaction tx1 = session.beginTransaction();
-        session.update(role);
-        tx1.commit();
-        session.close();
+        Transaction transaction;
+        try (Session session = HibernateSessionFactoryUtil
+                .getSessionFactory()
+                .openSession()) {
+            transaction = session.beginTransaction();
+            session.update(role);
+        }
+        transaction.commit();
         logger.info("Update role " + role.getName() + " to db");
     }
 
     public static void delete(Role role) {
-        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-        Transaction tx1 = session.beginTransaction();
-        session.delete(role);
-        tx1.commit();
-        session.close();
+        Transaction transaction;
+        try (Session session = HibernateSessionFactoryUtil
+                .getSessionFactory()
+                .openSession()) {
+            transaction = session.beginTransaction();
+            session.delete(role);
+        }
+        transaction.commit();
         logger.info("Delete role " + role.getName() + " from db");
     }
 }

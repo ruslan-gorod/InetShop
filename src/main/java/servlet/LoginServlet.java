@@ -23,8 +23,8 @@ public class LoginServlet extends HttpServlet {
         String passwordFromForm = request.getParameter("password");
         User newUser = null;
         List<User> listUsers = UserDaoHibImpl.getAllUsers();
-        for (User user: listUsers){
-            if (user.getLogin().equals(loginFromForm)){
+        for (User user : listUsers) {
+            if (user.getLogin().equals(loginFromForm)) {
                 newUser = user;
             }
         }

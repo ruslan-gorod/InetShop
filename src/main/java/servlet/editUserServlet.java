@@ -35,7 +35,7 @@ public class editUserServlet extends HttpServlet {
         List<Good> goods = GoodDoaHibImpl.getAllGoods();
         request.setAttribute("users", users);
         request.setAttribute("goods", goods);
-        request.setAttribute("role", RoleDaoHibImpl.findById((int)user.getRoleId()));
+        request.setAttribute("role", RoleDaoHibImpl.findById((int) user.getRoleId()));
         getServletContext().getRequestDispatcher("/users.jsp").forward(request, response);
     }
 
@@ -45,7 +45,7 @@ public class editUserServlet extends HttpServlet {
         request.setAttribute("login", user.getLogin());
         request.setAttribute("name", user.getName());
         request.setAttribute("id", user.getId());
-        request.setAttribute("role", RoleDaoHibImpl.findById((int)user.getRoleId()));
+        request.setAttribute("role", RoleDaoHibImpl.findById((int) user.getRoleId()));
         request.setAttribute("email", user.getEmail());
         request.getRequestDispatcher("/editUser.jsp").forward(request, response);
     }

@@ -13,39 +13,55 @@ public class OrderDaoHibImpl {
 
     public static Order findById(int id) {
         logger.info("Find order by id - " + id);
-        return HibernateSessionFactoryUtil.getSessionFactory().openSession().get(Order.class, id);
+        return HibernateSessionFactoryUtil
+                .getSessionFactory()
+                .openSession()
+                .get(Order.class, id);
     }
 
     public static List<Order> getAllOrders() {
-        List<Order> orders = (List<Order>) HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery("From Order").list();
+        List<Order> orders = (List<Order>) HibernateSessionFactoryUtil
+                .getSessionFactory()
+                .openSession()
+                .createQuery("From Order")
+                .list();
         logger.info("Find and return all orders");
         return orders;
     }
 
     public static void save(Order order) {
-        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-        Transaction tx1 = session.beginTransaction();
-        session.save(order);
-        tx1.commit();
-        session.close();
+        Transaction transaction;
+        try (Session session = HibernateSessionFactoryUtil
+                .getSessionFactory()
+                .openSession()) {
+            transaction = session.beginTransaction();
+            session.save(order);
+        }
+        transaction.commit();
         logger.info("Save order " + order.getId() + " with code - " + order.getCode() + " to db");
     }
 
     public static void update(Order order) {
-        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-        Transaction tx1 = session.beginTransaction();
-        session.update(order);
-        tx1.commit();
-        session.close();
+        Transaction transaction;
+        try (Session session = HibernateSessionFactoryUtil
+                .getSessionFactory()
+                .openSession()) {
+            transaction = session.beginTransaction();
+            session.update(order);
+        }
+        transaction.commit();
         logger.info("Update order " + order.getId() + " with code - " + order.getCode() + " to db");
     }
 
     public static void delete(Order order) {
-        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-        Transaction tx1 = session.beginTransaction();
-        session.delete(order);
-        tx1.commit();
-        session.close();
+        Transaction transaction;
+        try (Session session = HibernateSessionFactoryUtil
+                .getSessionFactory()
+                .openSession()) {
+            transaction = session.beginTransaction();
+            session.delete(order);
+        }
+        transaction.commit();
         logger.info("Delete order " + order.getId() + " with code - " + order.getCode() + " from db");
     }
 }

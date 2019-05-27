@@ -13,38 +13,55 @@ public class UserDaoHibImpl {
 
     public static User findById(int id) {
         logger.info("Find user by id - " + id);
-        return HibernateSessionFactoryUtil.getSessionFactory().openSession().get(User.class, id);
+        return HibernateSessionFactoryUtil
+                .getSessionFactory()
+                .openSession()
+                .get(User.class, id);
     }
 
-    public static List<User> getAllUsers(){
-        List<User> users = (List<User>)  HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery("From User").list();
+    public static List<User> getAllUsers() {
+        List<User> users = (List<User>) HibernateSessionFactoryUtil
+                .getSessionFactory()
+                .openSession()
+                .createQuery("From User")
+                .list();
         logger.info("Find and return all users");
         return users;
     }
+
     public static void save(User user) {
-        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-        Transaction tx1 = session.beginTransaction();
-        session.save(user);
-        tx1.commit();
-        session.close();
+        Transaction transaction;
+        try (Session session = HibernateSessionFactoryUtil
+                .getSessionFactory()
+                .openSession()) {
+            transaction = session.beginTransaction();
+            session.save(user);
+        }
+        transaction.commit();
         logger.info("Save user " + user.getName() + " to db");
     }
 
     public static void update(User user) {
-        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-        Transaction tx1 = session.beginTransaction();
-        session.update(user);
-        tx1.commit();
-        session.close();
+        Transaction transaction;
+        try (Session session = HibernateSessionFactoryUtil
+                .getSessionFactory()
+                .openSession()) {
+            transaction = session.beginTransaction();
+            session.update(user);
+        }
+        transaction.commit();
         logger.info("Update user " + user.getName() + " to db");
     }
 
     public static void delete(User user) {
-        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-        Transaction tx1 = session.beginTransaction();
-        session.delete(user);
-        tx1.commit();
-        session.close();
+        Transaction transaction;
+        try (Session session = HibernateSessionFactoryUtil
+                .getSessionFactory()
+                .openSession()) {
+            transaction = session.beginTransaction();
+            session.delete(user);
+        }
+        transaction.commit();
         logger.info("Delete user " + user.getName() + " from db");
     }
 }

@@ -10,19 +10,26 @@ import utils.HashUtil;
 @Entity
 @Table(name = "users")
 public class User {
+
     @Id
     @Column(name = "id")
     private int id;
+
     @Column(name = "name")
     private String name;
+
     @Column(name = "login")
     private String login;
+
     @Column(name = "password")
     private String password;
+
     @Column(name = "email")
     private String email;
+
     @Column(name = "roleid")
     private int roleId;
+
     @Column(name = "salt")
     private String salt;
 
@@ -42,7 +49,7 @@ public class User {
     public User(String login, String pass, String name, String email, int roleId, String salt) {
         this.name = name;
         this.login = login;
-        this.password = HashUtil.getSHA512SecurePassword(pass,salt);
+        this.password = HashUtil.getSHA512SecurePassword(pass, salt);
         this.email = email;
         this.roleId = roleId;
         this.salt = salt;
